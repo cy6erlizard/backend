@@ -2,26 +2,17 @@
 const mongoose = require("mongoose");
 
 const coinSchema = new mongoose.Schema({
-  coinId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  // We'll only store bubble size
-  baseSize: {
-    type: Number,
-    default: 50,
-  },
-  // We'll store IPs that have incremented this coin
-  incrementedIPs: {
-    type: [String],
-    default: [],
-  },
-  // For a placeholder address (replace in DB when ready)
-  coinAddress: {
-    type: String,
-    default: "0xPLACEHOLDER",
-  },
+  // The unique ID from CoinGecko
+  coinId: { type: String, required: true, unique: true },
+
+  // Only store the "raw" bubble size
+  baseSize: { type: Number, default: 50 },
+
+  // Keep track of which IPs have incremented the size
+  incrementedIPs: { type: [String], default: [] },
+
+  // (Optional) placeholder for a coin address, if each coin had one
+  // but here it's independent, so you can omit if not needed
 });
 
 module.exports = mongoose.model("Coin", coinSchema);

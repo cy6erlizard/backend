@@ -4,7 +4,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const http = require("http");
 const { Server } = require("socket.io");
+
 const coinsRouter = require("./routes/coin");
+const settingsRouter = require("./routes/settings");
 
 const app = express();
 const PORT = 5000;
@@ -15,7 +17,7 @@ mongoose
   .then(() => console.log("MongoDB connected."))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-// Create HTTP + Socket.IO
+// Setup HTTP + Socket.IO
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -24,11 +26,13 @@ const io = new Server(server, {
 });
 app.set("socketio", io);
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
 // Routes
 app.use("/api/coins", coinsRouter);
+app.use("/api/settings", settingsRouter);
 
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
