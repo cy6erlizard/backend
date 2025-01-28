@@ -4,18 +4,26 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const http = require("http");
 const { Server } = require("socket.io");
-
+require("dotenv").config();
 const coinsRouter = require("./routes/coin");
 const settingsRouter = require("./routes/settings");
 
 const app = express();
-const PORT = 5000;
+
+// Connect to MongoDB
+
+// Read env vars (PORT, MONGODB_URI)
+const PORT = process.env.PORT || 5000;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 // Connect to MongoDB
 mongoose
-  .connect("mongodb://127.0.0.1:27017/shillDB")
+  .connect(MONGODB_URI)
   .then(() => console.log("MongoDB connected."))
   .catch((err) => console.error("MongoDB connection error:", err));
+
+// Create HTTP server for Socket.IO
+
 
 // Setup HTTP + Socket.IO
 const server = http.createServer(app);
